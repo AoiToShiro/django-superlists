@@ -37,7 +37,8 @@ class NewVisitorTest(unittest.TestCase):
         input.send_keys(Keys.ENTER)
         time.sleep(1)
 
-        table = table.find_element_by_tag_name('tr')
+        table = table.find_element_by_tag_name('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
         self.assertTrue(
             any(row.text == '1: Buy peacock feathers' for row in rows)
         )
@@ -45,7 +46,7 @@ class NewVisitorTest(unittest.TestCase):
         # There is still a text box inviting her to add another item. She
         # enters "Use peacock feathers to make a fly" (Edith is very methodical)
         self.fail('Finish the test!')
-        
+
         # The page updates again, and now shows both items on her list
 
         # Edith wonders whether the site will remember her list. Then she sees
