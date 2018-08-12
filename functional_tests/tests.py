@@ -5,7 +5,7 @@ from selenium.common.exceptions import WebDriverException
 import unittest
 import time
 
-MAX_WAIT = 10
+MAX_WAIT = 15
 
 class NewVisitorTest(LiveServerTestCase):
 
