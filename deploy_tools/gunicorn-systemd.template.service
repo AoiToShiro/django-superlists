@@ -1,0 +1,15 @@
+[Unit]
+Description=Gunicorn server for sl-staging.listymclistface.site
+
+[Service]
+Restart=on-failure
+User=kevin
+WorkingDirectory=/home/kevin/sites/sl-staging.listymclistface.site
+EnvironmentFile=/home/kevin/sites/sl-staging.listymclistface.site/.env
+
+ExecStart=/home/kevin/sites/sl-staging.listymclistface.site/virtualenv/bin/gunicorn \
+    --bind unix:/tmp/sl-staging.listymclistface.site.socket \
+    superlists.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
