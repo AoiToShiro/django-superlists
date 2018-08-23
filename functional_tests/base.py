@@ -4,7 +4,7 @@ from selenium.common.exceptions import WebDriverException
 import time
 import os
 
-MAX_WAIT = 15
+MAX_WAIT = 20
 
 class FunctionalTest(StaticLiveServerTestCase):
 
