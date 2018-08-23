@@ -1,6 +1,7 @@
 from django.test import TestCase
 from lists.models import Item, List
 from django.utils.html import escape
+from lists.forms import ItemForm
 
 
 # Create your tests here.
@@ -10,6 +11,10 @@ class HomepPageTest(TestCase):
     def test_home_page_returns_correct_html(self):
         response = self.client.get('/') # We deleted the old test_root_​url_resolves test, because that’s tested implicitly by the Django Test Client
         self.assertTemplateUsed(response, 'home.html')
+
+    def test_home_page_uses_item_form(self):
+        response = self.client.get('/')
+        self.assertIsInstance(response.context['form'], ItemForm)
 
 class ListViewTest(TestCase):
 
