@@ -19,7 +19,7 @@ class LoginTest(FunctionalTest):
 
         # A message appears telling her that an email has been sent
         self.wait_for(lambda: self.assertIn(
-            'check your email',
+            'Check your email',
             self.browser.find_element_by_tag_name('body').text
         ))
 
