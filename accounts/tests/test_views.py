@@ -48,7 +48,7 @@ class SendloginEmailViewTest(TestCase):
         })
 
         token = Token.objects.first()
-        expected_url = f'http://testserver/accounts/logi?token={token.uid}' #I have removed the 'n' from login as the url does not seem to be able to show the 'n'? don't know why but changed it and moved on
+        expected_url = f'http://testserver/accounts/login?token={token.uid}' 
         (subject, body, from_email, to_list), kwargs = mock_send_mail.call_args
         self.assertIn(expected_url, body)
 
