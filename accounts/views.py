@@ -9,7 +9,8 @@ def send_login_email(request):
     email = request.POST['email']
     token = Token.objects.create(email=email)
     url = request.build_absolute_uri(
-        reverse('login') + '?token=' + str(token.uid) 
+        reverse('login') + '?token=' + str(token.uid)
+    )
     message_body = f'Use this link to log in:\n\n{url}'
     # print(message_body)
     send_mail(
