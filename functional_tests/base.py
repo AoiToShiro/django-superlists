@@ -10,7 +10,7 @@ import os
 from datetime import datetime
 from .server_tools import reset_database
 
-MAX_WAIT = 25
+MAX_WAIT = 30
 
 def wait(fn):
     def modified_fn(*args, **kwargs):

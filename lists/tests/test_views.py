@@ -213,28 +213,16 @@ class ShareListTest(TestCase):
         list_ = List.objects.create()
         response = self.client.post(
             f'/lists/{list_.id}/share',
-            data={'sharee': 'sharee.with@me.com'}
+            {'sharee': 'sharee.with@me.com'}
         )
 
         self.assertRedirects(response, list_.get_absolute_url())
 
     def test_can_share_a_list_with_another_user(self):
-        sharee = User.objects.create(email='sharee.with@me.com')
+        sharee = User.objects.create(email='share.with@me.com')
         list_ = List.objects.create()
-        response = self.client.post(
+        self.client.post(
             f'/lists/{list_.id}/share',
-            data={'sharee': 'share.with@you.com'}
+            {'sharee': 'share.with@me.com'}
         )
-        self.assertEqual(response, list_.shared_with.all())
-
-        # self.fail()
-# def test_POST_redirects_to_list_view(self):
-#     other_list = List.objects.create()
-#     correct_list = List.objects.create()
-#
-#     response = self.client.post(
-#         f'/lists/{correct_list.id}/',
-#         data={'text': 'A new item for an existing list'}
-#     )
-#
-#     self.assertRedirects(response, f'/lists/{correct_list.id}/')
+        self.assertIn(sharee, list_.shared_with.all())
