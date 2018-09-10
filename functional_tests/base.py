@@ -10,25 +10,25 @@ import os
 from datetime import datetime
 from .server_tools import reset_database
 
+MAX_WAIT = 25
+
+def wait(fn):
+    def modified_fn(*args, **kwargs):
+        start_time = time.time()
+        while True:
+            try:
+                return fn(*args, **kwargs)
+            except (AssertionError, WebDriverException) as e:
+                if time.time() - start_time > MAX_WAIT:
+                    raise e
+                time.sleep(0.5)
+    return modified_fn
+
 SCREEN_DUMP_LOCATION = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), 'screendumps'
 )
 
-MAX_WAIT = 25
-
 class FunctionalTest(StaticLiveServerTestCase):
-
-    def wait(fn):
-        def modified_fn(*args, **kwargs):
-            start_time = time.time()
-            while True:
-                try:
-                    return fn(*args, **kwargs)
-                except (AssertionError, WebDriverException) as e:
-                    if time.time() - start_time > MAX_WAIT:
-                        raise e
-                    time.sleep(0.5)
-        return modified_fn
 
     def setUp(self):
         self.browser = webdriver.Firefox()

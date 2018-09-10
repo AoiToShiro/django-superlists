@@ -1,4 +1,4 @@
-from .base import wait_for
+# from .base import wait_for
 
 class MyListPage(object):
 

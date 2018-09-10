@@ -7,7 +7,7 @@ class ListPage(object):
         self.test = test
 
     def get_table_rows(self):
-        return self.test.browser.find_elements_by_css_selector('#id_list_tabel tr')
+        return self.test.browser.find_elements_by_css_selector('#id_list_table tr')
 
 
     @wait

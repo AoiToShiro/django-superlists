@@ -131,24 +131,6 @@ class NewListViewIntegratedTest(TestCase):
         new_item = Item.objects.first()
         self.assertEqual(new_item.text, 'A new list item')
 
-    # def test_redirects_after_POST(self):
-    #     response = self.client.post('/lists/new', data={'text': 'A new list item'})
-    #     new_list = List.objects.first()
-    #     self.assertRedirects(response, f'/lists/{new_list.id}/') #replaces the need for 2 asserts, one to check the status code and the other for the response
-
-    # def test_for_invalid_input_renders_home_template(self):
-    #     response = self.client.post('/lists/new', data={'text': ''})
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertTemplateUsed(response, 'home.html')
-
-    # def test_validation_errors_are_shown_on_home_page(self):
-    #     response = self.client.post('/lists/new', data={'text': ''})
-    #     self.assertContains(response, escape(EMPTY_ITEM_ERROR))
-    #
-    # def test_for_invalid_input_passes_form_to_template(self):
-    #     response = self.client.post('/lists/new', data={'text': ''})
-    #     self.assertIsInstance(response.context['form'], ItemForm)
-    #
     def test_for_invald_input_doesnt_save_but_shows_errors(self):
         response = self.client.post('/lists/new', data={'text': ''})
         self.assertEqual(List.objects.count(), 0)
@@ -223,3 +205,36 @@ class MyListTest(TestCase):
         correct_user = User.objects.create(email='a@b.com')
         response = self.client.get('/lists/users/a@b.com/')
         self.assertEqual(response.context['owner'], correct_user)
+
+class ShareListTest(TestCase):
+
+    def test_POST_redirects_to_list_page(self):
+        sharee = User.objects.create(email='sharee.with@me.com')
+        list_ = List.objects.create()
+        response = self.client.post(
+            f'/lists/{list_.id}/share',
+            data={'sharee': 'sharee.with@me.com'}
+        )
+
+        self.assertRedirects(response, list_.get_absolute_url())
+
+    def test_can_share_a_list_with_another_user(self):
+        sharee = User.objects.create(email='sharee.with@me.com')
+        list_ = List.objects.create()
+        response = self.client.post(
+            f'/lists/{list_.id}/share',
+            data={'sharee': 'share.with@you.com'}
+        )
+        self.assertEqual(response, list_.shared_with.all())
+
+        # self.fail()
+# def test_POST_redirects_to_list_view(self):
+#     other_list = List.objects.create()
+#     correct_list = List.objects.create()
+#
+#     response = self.client.post(
+#         f'/lists/{correct_list.id}/',
+#         data={'text': 'A new item for an existing list'}
+#     )
+#
+#     self.assertRedirects(response, f'/lists/{correct_list.id}/')
